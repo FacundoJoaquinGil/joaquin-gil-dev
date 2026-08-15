@@ -8,7 +8,6 @@ import {
   ArrowRight,
   BarChart3,
   CalendarDays,
-  Check,
   ChevronRight,
   Dumbbell,
   Globe2,
@@ -366,10 +365,7 @@ function App() {
             px-5 sm:px-8
           "
         >
-          <a
-            href="#sobre-mi"
-            className="flex items-center gap-3 font-semibold"
-          >
+          <a href="#sobre-mi" className="flex items-center gap-3 font-semibold">
             <div
               className="
                 flex h-10 w-10 items-center justify-center
@@ -420,7 +416,10 @@ function App() {
               className="
                 flex items-center gap-2
                 rounded-xl
-                bg-white
+                bg-gradient-to-r
+from-indigo-500
+to-violet-500
+text-white
                 px-5 py-2.5
                 text-sm font-semibold text-slate-900
                 transition
@@ -429,7 +428,6 @@ function App() {
               "
             >
               Contactarme
-
               <ArrowRight size={16} />
             </a>
           </nav>
@@ -492,13 +490,15 @@ function App() {
                 className="
                   flex items-center justify-center gap-2
                   rounded-xl
-                  bg-white
+                  bg-gradient-to-r
+from-indigo-500
+to-violet-500
+text-white
                   px-5 py-3
                   font-semibold text-slate-900
                 "
               >
                 Contactarme
-
                 <ArrowRight size={17} />
               </a>
             </nav>
@@ -641,7 +641,6 @@ function App() {
                 "
               >
                 Hola, soy{" "}
-
                 <span
                   className="
                     block
@@ -689,15 +688,10 @@ function App() {
                     p-4
                   "
                 >
-                  <MapPin
-                    size={19}
-                    className="shrink-0 text-indigo-400"
-                  />
+                  <MapPin size={19} className="shrink-0 text-indigo-400" />
 
                   <div>
-                    <p className="text-xs text-slate-500">
-                      Ubicación
-                    </p>
+                    <p className="text-xs text-slate-500">Ubicación</p>
 
                     <p className="mt-0.5 text-sm text-slate-300">
                       Bella Vista, Tucumán
@@ -718,15 +712,10 @@ function App() {
                     hover:bg-white/[0.06]
                   "
                 >
-                  <Mail
-                    size={19}
-                    className="shrink-0 text-cyan-400"
-                  />
+                  <Mail size={19} className="shrink-0 text-cyan-400" />
 
                   <div className="min-w-0">
-                    <p className="text-xs text-slate-500">
-                      Email
-                    </p>
+                    <p className="text-xs text-slate-500">Email</p>
 
                     <p className="mt-0.5 truncate text-sm text-slate-300">
                       {perfil.email}
@@ -749,14 +738,11 @@ function App() {
                 "
               >
                 <p className="leading-7 text-slate-300">
-                  <span className="font-semibold text-white">
-                    Mi objetivo:
-                  </span>{" "}
+                  <span className="font-semibold text-white">Mi objetivo:</span>{" "}
                   crear soluciones sencillas y útiles que permitan que la
                   tecnología ayude a tu negocio en lugar de complicarlo.
                 </p>
               </div>
-              
             </motion.div>
           </div>
 
@@ -958,9 +944,7 @@ function App() {
 
               <div>
                 <div className="flex items-center gap-2">
-                  <p className="text-xl font-bold text-white">
-                    UTN
-                  </p>
+                  <p className="text-xl font-bold text-white">UTN</p>
 
                   <span
                     className="
@@ -972,10 +956,7 @@ function App() {
                       text-violet-300
                     "
                   >
-                    <AnimatedCounter
-                      end={perfil.graduacion}
-                      duration={1800}
-                    />
+                    <AnimatedCounter end={perfil.graduacion} duration={1800} />
                   </span>
                 </div>
 
@@ -1037,8 +1018,6 @@ function App() {
               items-center
             "
           >
-            
-
             {/* TITULO */}
 
             <h2
@@ -1053,7 +1032,6 @@ function App() {
               "
             >
               Hacé más simple
-
               <span
                 className="
                   block
@@ -1070,55 +1048,55 @@ function App() {
             </h2>
 
             <section className="relative z-10">
-        <div
-          className="
+              <div
+                className="
             mx-auto
             max-w-7xl
             px-5 py-12
             sm:px-8
           "
-        >
-          <p
-            className="
+              >
+                <p
+                  className="
               mb-7
               text-center
               text-sm
               text-slate-500
             "
-          >
-            Soluciones para distintos tipos de negocios
-          </p>
+                >
+                  Soluciones para distintos tipos de negocios
+                </p>
 
-          <div
-            className="
+                <div
+                  className="
               grid
               grid-cols-2
               gap-3
               md:grid-cols-5
             "
-          >
-            {negocios.map(({ icon: Icon, nombre }, index) => (
-              <motion.div
-                key={nombre}
-                initial={{
-                  opacity: 0,
-                  y: 15,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  delay: index * 0.07,
-                  duration: 0.4,
-                }}
-                whileHover={{
-                  y: -4,
-                }}
-                className="
+                >
+                  {negocios.map(({ icon: Icon, nombre }, index) => (
+                    <motion.div
+                      key={nombre}
+                      initial={{
+                        opacity: 0,
+                        y: 15,
+                      }}
+                      whileInView={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      viewport={{
+                        once: true,
+                      }}
+                      transition={{
+                        delay: index * 0.07,
+                        duration: 0.4,
+                      }}
+                      whileHover={{
+                        y: -4,
+                      }}
+                      className="
                   flex
                   items-center
                   justify-center
@@ -1134,16 +1112,15 @@ function App() {
                   hover:bg-white/5
                   hover:text-white
                 "
-              >
-                <Icon size={19} />
+                    >
+                      <Icon size={19} />
 
-                {nombre}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+                      {nombre}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
 
             {/* BOTONES */}
 
@@ -1185,7 +1162,6 @@ function App() {
                 "
               >
                 <MessageCircle size={20} />
-
                 Tengo una idea
               </motion.a>
 
@@ -1209,19 +1185,13 @@ function App() {
                 "
               >
                 Ver qué puedo hacer
-
                 <ChevronRight size={18} />
               </a>
             </div>
-
-           
-
           </motion.div>
         </div>
       </section>
 
-
-      
       {/* =====================================================
           SERVICIOS
       ===================================================== */}
@@ -1285,8 +1255,8 @@ function App() {
                 text-slate-400
               "
             >
-              Desde una página sencilla hasta un sistema completo para
-              organizar tu negocio.
+              Desde una página sencilla hasta un sistema completo para organizar
+              tu negocio.
             </p>
           </motion.div>
 
@@ -1298,30 +1268,29 @@ function App() {
               lg:grid-cols-3
             "
           >
-            {servicios.map(
-              ({ icon: Icon, titulo, descripcion }, index) => (
-                <motion.article
-                  key={titulo}
-                  initial={{
-                    opacity: 0,
-                    y: 25,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    amount: 0.2,
-                  }}
-                  transition={{
-                    delay: index * 0.06,
-                    duration: 0.45,
-                  }}
-                  whileHover={{
-                    y: -6,
-                  }}
-                  className="
+            {servicios.map(({ icon: Icon, titulo, descripcion }, index) => (
+              <motion.article
+                key={titulo}
+                initial={{
+                  opacity: 0,
+                  y: 25,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  amount: 0.2,
+                }}
+                transition={{
+                  delay: index * 0.06,
+                  duration: 0.45,
+                }}
+                whileHover={{
+                  y: -6,
+                }}
+                className="
                     group
                     rounded-2xl
                     border border-white/[0.08]
@@ -1332,9 +1301,9 @@ function App() {
                     hover:border-indigo-400/30
                     hover:bg-white/[0.06]
                   "
-                >
-                  <div
-                    className="
+              >
+                <div
+                  className="
                       mb-7
                       flex h-12 w-12
                       items-center justify-center
@@ -1343,46 +1312,42 @@ function App() {
                       bg-indigo-400/10
                       text-indigo-400
                     "
-                  >
-                    <Icon size={23} />
-                  </div>
+                >
+                  <Icon size={23} />
+                </div>
 
-                  <h3 className="text-xl font-semibold">
-                    {titulo}
-                  </h3>
+                <h3 className="text-xl font-semibold">{titulo}</h3>
 
-                  <p
-                    className="
+                <p
+                  className="
                       mt-3
                       leading-7
                       text-slate-400
                     "
-                  >
-                    {descripcion}
-                  </p>
+                >
+                  {descripcion}
+                </p>
 
-                  <div
-                    className="
+                <div
+                  className="
                       mt-6
                       flex items-center gap-2
                       text-sm
                       font-medium
                       text-indigo-400
                     "
-                  >
-                    Puede adaptarse a tu negocio
-
-                    <ArrowRight
-                      size={15}
-                      className="
+                >
+                  Puede adaptarse a tu negocio
+                  <ArrowRight
+                    size={15}
+                    className="
                         transition-transform
                         group-hover:translate-x-1
                       "
-                    />
-                  </div>
-                </motion.article>
-              ),
-            )}
+                  />
+                </div>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
@@ -1585,10 +1550,7 @@ function App() {
           />
 
           <div className="relative z-10">
-            <MessageCircle
-              size={35}
-              className="mx-auto text-indigo-400"
-            />
+            <MessageCircle size={35} className="mx-auto text-indigo-400" />
 
             <h2
               className="
@@ -1611,9 +1573,9 @@ function App() {
                 text-slate-400
               "
             >
-              Contame qué querés mejorar, automatizar u organizar. No hace
-              falta que sepas qué tecnología necesitás: podemos encontrar
-              juntos la solución adecuada.
+              Contame qué querés mejorar, automatizar u organizar. No hace falta
+              que sepas qué tecnología necesitás: podemos encontrar juntos la
+              solución adecuada.
             </p>
 
             <motion.a
@@ -1631,7 +1593,10 @@ function App() {
                 inline-flex
                 items-center gap-3
                 rounded-xl
-                bg-white
+                bg-gradient-to-r
+from-indigo-500
+to-violet-500
+text-white
                 px-7 py-4
                 font-semibold
                 text-slate-900
@@ -1639,9 +1604,7 @@ function App() {
               "
             >
               <MessageCircle size={20} />
-
               Hablar por WhatsApp
-
               <ArrowRight size={18} />
             </motion.a>
           </div>
@@ -1684,13 +1647,12 @@ function App() {
               >
                 <Zap size={16} />
               </div>
-
               Facundo Joaquín Gil
             </div>
 
             <p className="mt-3 text-sm text-slate-500">
-              Técnico Universitario en Programación · Soluciones digitales
-              para negocios.
+              Técnico Universitario en Programación · Soluciones digitales para
+              negocios.
             </p>
 
             <p className="mt-1 text-xs text-slate-600">
