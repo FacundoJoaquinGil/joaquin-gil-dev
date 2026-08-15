@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import Particles from "@tsparticles/react";
 
+import logoJ from "./assets/logo.png";
 import fotoperfil from "./assets/perfil.png";
 
 import {
@@ -9,6 +10,7 @@ import {
   BarChart3,
   CalendarDays,
   ChevronRight,
+  ChevronDown,
   Dumbbell,
   Globe2,
   Menu,
@@ -21,7 +23,6 @@ import {
   UtensilsCrossed,
   Users,
   X,
-  Zap,
   GraduationCap,
   BriefcaseBusiness,
   FolderKanban,
@@ -128,7 +129,7 @@ const perfil = {
   universidad: "Universidad Tecnológica Nacional",
   graduacion: 2024,
   experiencia: 3,
-  proyectos: 20,
+  proyectos: 12,
 };
 
 /* =========================================================
@@ -302,6 +303,23 @@ const particlesOptions = {
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const whatsapp = "3816566750";
 
@@ -346,157 +364,419 @@ function App() {
       </div>
 
       {/* =====================================================
-          NAVBAR
-      ===================================================== */}
+    NAVBAR
+===================================================== */}
 
       <header
-        className="
-          fixed left-0 right-0 top-0 z-50
+        className={`
+    fixed
+    left-1/2
+    z-50
+    -translate-x-1/2
+
+    transition-[width,top,border-radius,background-color,box-shadow]
+    duration-500
+    ease-out
+
+    ${
+      isScrolled
+        ? `
+          top-3
+          w-[calc(100%-24px)]
+          max-w-5xl
+
+          rounded-2xl
+          border border-white/10
+
+          bg-[#0b101c]/85
+          shadow-2xl shadow-black/30
+          backdrop-blur-xl
+        `
+        : `
+          top-0
+          w-full
+
+          rounded-none
           border-b border-white/10
+
           bg-[#070b14]/75
           backdrop-blur-xl
-        "
+        `
+    }
+  `}
       >
         <div
-          className="
-            mx-auto flex h-[74px]
+          className={`
+      mx-auto
+      flex
+      items-center
+      justify-between
+
+      transition-all duration-500
+
+      ${
+        isScrolled
+          ? `
+            h-[62px]
+            px-4
+            sm:px-5
+          `
+          : `
+            h-[74px]
             max-w-7xl
-            items-center justify-between
-            px-5 sm:px-8
-          "
+            px-5
+            sm:px-8
+          `
+      }
+    `}
         >
-          <a href="#sobre-mi" className="flex items-center gap-3 font-semibold">
-            <div
-              className="
-                flex h-10 w-10 items-center justify-center
-                rounded-xl
-                bg-gradient-to-br
-                from-indigo-500
-                to-cyan-400
-                shadow-lg shadow-indigo-500/20
-              "
-            >
-              <Zap size={20} />
-            </div>
+          {/* LOGO */}
+<a
+  href="#sobre-mi"
+  onClick={() => setMenuOpen(false)}
+  className="
+    flex
+    shrink-0
+    items-center
+    gap-3
+    font-semibold
+  "
+>
+  {/* LOGO J */}
+  <div
+    className={`
+      flex
+      items-center
+      justify-center
 
-            <span>
-              Joaquín
-              <span className="text-indigo-400">.</span>
-            </span>
-          </a>
+      overflow-hidden
 
-          {/* DESKTOP */}
+      transition-all
+      duration-500
 
-          <nav className="hidden items-center gap-8 md:flex">
+      ${isScrolled ? "h-10 w-10" : "h-12 w-12"}
+    `}
+  >
+    <img
+  src={logoJ}
+  alt="Logo Joaquín"
+  className="
+    h-full
+    w-full
+    rounded-xl
+    object-contain
+  "
+/>
+  </div>
+
+</a>
+
+          {/* =====================================================
+        DESKTOP
+    ===================================================== */}
+
+          <nav
+            className="
+        hidden
+        items-center
+        gap-1
+        md:flex
+      "
+          >
             <a
               href="#sobre-mi"
-              className="text-sm text-slate-400 transition hover:text-white"
+              className="
+          rounded-lg
+          px-3 py-2
+
+          text-sm
+          text-slate-400
+
+          transition
+
+          hover:bg-white/5
+          hover:text-white
+        "
             >
               Sobre mí
             </a>
 
             <a
-              href="#servicios"
-              className="text-sm text-slate-400 transition hover:text-white"
+              href="#propuesta"
+              className="
+          rounded-lg
+          px-3 py-2
+
+          text-sm
+          text-slate-400
+
+          transition
+
+          hover:bg-white/5
+          hover:text-white
+        "
             >
-              Qué puedo hacer
+              Propuesta
+            </a>
+
+            <a
+              href="#servicios"
+              className="
+          rounded-lg
+          px-3 py-2
+
+          text-sm
+          text-slate-400
+
+          transition
+
+          hover:bg-white/5
+          hover:text-white
+        "
+            >
+              Servicios
             </a>
 
             <a
               href="#como-trabajo"
-              className="text-sm text-slate-400 transition hover:text-white"
+              className="
+          rounded-lg
+          px-3 py-2
+
+          text-sm
+          text-slate-400
+
+          transition
+
+          hover:bg-white/5
+          hover:text-white
+        "
             >
               Cómo trabajo
             </a>
 
+            {/* CONTACTO */}
+
             <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noreferrer"
+              href="#contacto"
               className="
-                flex items-center gap-2
-                rounded-xl
-                bg-gradient-to-r
-from-indigo-500
-to-violet-500
-text-white
-                px-5 py-2.5
-                text-sm font-semibold text-slate-900
-                transition
-                hover:-translate-y-0.5
-                hover:bg-slate-100
-              "
+          ml-2
+
+          flex
+          items-center
+          gap-2
+
+          rounded-xl
+
+          bg-gradient-to-r
+          from-indigo-500
+          to-violet-500
+
+          px-5 py-2.5
+
+          text-sm
+          font-semibold
+          text-white
+
+          shadow-lg
+          shadow-indigo-500/20
+
+          transition-all duration-300
+
+          hover:-translate-y-0.5
+          hover:shadow-indigo-500/30
+        "
             >
               Contactarme
               <ArrowRight size={16} />
             </a>
           </nav>
 
-          {/* MOBILE BUTTON */}
+          {/* =====================================================
+        BOTÓN MOBILE
+    ===================================================== */}
 
           <button
             type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Abrir menú"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={menuOpen}
             className="
-              flex h-10 w-10
-              items-center justify-center
-              rounded-lg
-              border border-white/10
-              bg-white/5
-              md:hidden
-            "
+        flex
+        h-10 w-10
+        items-center
+        justify-center
+
+        rounded-xl
+
+        border border-white/10
+        bg-white/5
+
+        text-white
+
+        transition
+
+        hover:border-white/20
+        hover:bg-white/10
+
+        md:hidden
+      "
           >
-            {menuOpen ? <X /> : <Menu />}
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* =====================================================
+      MOBILE MENU
+  ===================================================== */}
 
         {menuOpen && (
           <motion.div
             initial={{
               opacity: 0,
               y: -10,
+              height: 0,
             }}
             animate={{
               opacity: 1,
               y: 0,
+              height: "auto",
             }}
-            className="
-              border-t border-white/10
-              bg-[#070b14]
-              px-5 py-6
-              md:hidden
-            "
+            exit={{
+              opacity: 0,
+              y: -10,
+              height: 0,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
+            className={`
+        border-t border-white/10
+
+        px-4
+        pb-4
+        pt-3
+
+        md:hidden
+
+        ${
+          isScrolled
+            ? `
+              rounded-b-2xl
+              bg-[#0b101c]/95
+            `
+            : `
+              bg-[#070b14]/95
+            `
+        }
+      `}
           >
-            <nav className="flex flex-col gap-5">
-              <a href="#sobre-mi" onClick={() => setMenuOpen(false)}>
+            <nav className="flex flex-col gap-1">
+              <a
+                href="#sobre-mi"
+                onClick={() => setMenuOpen(false)}
+                className="
+            rounded-xl
+            px-4 py-3
+
+            text-sm
+            text-slate-300
+
+            transition
+
+            hover:bg-white/5
+            hover:text-white
+          "
+              >
                 Sobre mí
               </a>
 
-              <a href="#servicios" onClick={() => setMenuOpen(false)}>
-                Qué puedo hacer
+              <a
+                href="#propuesta"
+                onClick={() => setMenuOpen(false)}
+                className="
+            rounded-xl
+            px-4 py-3
+
+            text-sm
+            text-slate-300
+
+            transition
+
+            hover:bg-white/5
+            hover:text-white
+          "
+              >
+                Propuesta
               </a>
 
-              <a href="#como-trabajo" onClick={() => setMenuOpen(false)}>
+              <a
+                href="#servicios"
+                onClick={() => setMenuOpen(false)}
+                className="
+            rounded-xl
+            px-4 py-3
+
+            text-sm
+            text-slate-300
+
+            transition
+
+            hover:bg-white/5
+            hover:text-white
+          "
+              >
+                Servicios
+              </a>
+
+              <a
+                href="#como-trabajo"
+                onClick={() => setMenuOpen(false)}
+                className="
+            rounded-xl
+            px-4 py-3
+
+            text-sm
+            text-slate-300
+
+            transition
+
+            hover:bg-white/5
+            hover:text-white
+          "
+              >
                 Cómo trabajo
               </a>
 
               <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noreferrer"
+                href="#contacto"
+                onClick={() => setMenuOpen(false)}
                 className="
-                  flex items-center justify-center gap-2
-                  rounded-xl
-                  bg-gradient-to-r
-from-indigo-500
-to-violet-500
-text-white
-                  px-5 py-3
-                  font-semibold text-slate-900
-                "
+            mt-2
+
+            flex
+            items-center
+            justify-center
+            gap-2
+
+            rounded-xl
+
+            bg-gradient-to-r
+            from-indigo-500
+            to-violet-500
+
+            px-5 py-3
+
+            font-semibold
+            text-white
+
+            shadow-lg
+            shadow-indigo-500/20
+
+            transition
+
+            active:scale-[0.98]
+          "
               >
                 Contactarme
                 <ArrowRight size={17} />
@@ -541,72 +821,56 @@ text-white
           >
             {/* FOTO */}
 
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: -40,
-              }}
-              animate={{
-                opacity: 1,
-                x: 0,
-              }}
-              transition={{
-                duration: 0.7,
-                ease: "easeOut",
-              }}
-              className="
-                mx-auto
-                w-full
-                max-w-[410px]
-                lg:mx-0
-              "
-            >
-              <div
-                className="
-                  profile-image-wrapper
-                  relative
-                  aspect-[4/5]
-                  overflow-hidden
-                  rounded-[30px]
-                  border border-white/10
-                  bg-gradient-to-br
-                  from-indigo-500/20
-                  via-slate-900
-                  to-cyan-500/15
-                  p-1
-                  shadow-2xl
-                  shadow-indigo-500/10
-                "
-              >
-                <img
-                  src={fotoperfil}
-                  alt="Joaquín Gil"
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  className="
-                    profile-image
-                    h-full
-                    w-full
-                    rounded-[26px]
-                    object-cover
-                    object-top
-                  "
-                />
-
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    inset-x-10
-                    bottom-[-30px]
-                    h-24
-                    bg-indigo-500/15
-                    blur-3xl
-                  "
-                />
-              </div>
-            </motion.div>
+<motion.div
+  initial={{
+    opacity: 0,
+  }}
+  animate={{
+    opacity: 1,
+  }}
+  transition={{
+    duration: 0.7,
+    ease: "easeOut",
+  }}
+  className="
+    mx-auto
+    w-full
+    max-w-[410px]
+    lg:mx-0
+  "
+>
+  <div
+    className="
+      profile-image-wrapper
+      relative
+      aspect-[4/5]
+      overflow-hidden
+      rounded-[30px]
+      border border-white/10
+      bg-[#0b101c]
+      p-1
+      shadow-2xl
+      shadow-indigo-500/10
+    "
+  >
+    <img
+      src={fotoperfil}
+      alt="Joaquín Gil"
+      loading="eager"
+      fetchPriority="high"
+      decoding="sync"
+      draggable={false}
+      className="
+        block
+        h-full
+        w-full
+        rounded-[26px]
+        object-cover
+        object-top
+      "
+    />
+  </div>
+</motion.div>
 
             {/* INFORMACIÓN */}
 
@@ -969,37 +1233,84 @@ text-white
             </motion.div>
           </motion.div>
         </div>
+
+{/* =====================================================
+    INDICADOR DE SCROLL
+===================================================== */}
+
+<motion.a
+  href="#propuesta"
+  aria-label="Desplazarse a la siguiente sección"
+  initial={{
+    opacity: 0,
+  }}
+  animate={{
+    opacity: isScrolled ? 0 : 1,
+    y: [0, 7, 0],
+  }}
+  transition={{
+    opacity: {
+      duration: 0.3,
+    },
+    y: {
+      duration: 1.6,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  }}
+  className={`
+    fixed
+    bottom-6
+    right-6
+    z-30
+
+    text-slate-500
+
+    transition-colors
+    duration-300
+
+    hover:text-indigo-400
+
+    ${
+      isScrolled
+        ? "pointer-events-none"
+        : "pointer-events-auto"
+    }
+  `}
+>
+  <ChevronDown size={28} strokeWidth={1.8} />
+</motion.a>
+
       </section>
 
       {/* =====================================================
-          HERO SECUNDARIO / PROPUESTA
-      ===================================================== */}
+    PROPUESTA
+===================================================== */}
 
       <section
         id="propuesta"
         className="
-          relative z-10
-          py-24
-          sm:py-32
-        "
+    relative z-10
+    py-24
+    sm:py-32
+  "
       >
         <div
           className="
-            mx-auto
-            flex w-full
-            max-w-5xl
-            flex-col
-            items-center
-            justify-center
-            px-5
-            text-center
-            sm:px-8
-          "
+      mx-auto
+      max-w-7xl
+      px-5
+      sm:px-8
+    "
         >
+          {/* =====================================================
+        ENCABEZADO
+    ===================================================== */}
+
           <motion.div
             initial={{
               opacity: 0,
-              y: 35,
+              y: 25,
             }}
             whileInView={{
               opacity: 1,
@@ -1010,184 +1321,290 @@ text-white
               amount: 0.3,
             }}
             transition={{
-              duration: 0.7,
+              duration: 0.6,
             }}
-            className="
-              flex w-full
-              flex-col
-              items-center
-            "
+            className="max-w-3xl"
           >
-            {/* TITULO */}
+            <span
+              className="
+          text-sm
+          font-semibold
+          uppercase
+          tracking-[0.2em]
+          text-indigo-400
+        "
+            >
+              Propuesta
+            </span>
 
             <h2
               className="
-                max-w-5xl
-                text-4xl
-                font-bold
-                tracking-[-0.04em]
-                sm:text-5xl
-                lg:text-6xl
-                xl:text-7xl
-              "
+          mt-4
+          text-4xl
+          font-bold
+          tracking-tight
+          sm:text-5xl
+        "
             >
-              Hacé más simple
+              Hacé más simple{" "}
               <span
                 className="
-                  block
-                  bg-gradient-to-r
-                  from-indigo-400
-                  via-violet-400
-                  to-cyan-400
-                  bg-clip-text
-                  text-transparent
-                "
+            bg-gradient-to-r
+            from-indigo-400
+            via-violet-400
+            to-cyan-400
+            bg-clip-text
+            text-transparent
+          "
               >
                 tu negocio.
               </span>
             </h2>
 
-            <section className="relative z-10">
-              <div
-                className="
-            mx-auto
-            max-w-7xl
-            px-5 py-12
-            sm:px-8
-          "
-              >
-                <p
-                  className="
-              mb-7
-              text-center
-              text-sm
-              text-slate-500
-            "
-                >
-                  Soluciones para distintos tipos de negocios
-                </p>
+            <p
+              className="
+          mt-5
+          max-w-2xl
+          text-lg
+          leading-8
+          text-slate-400
+        "
+            >
+              Desarrollo herramientas digitales para simplificar tareas,
+              organizar información y resolver problemas cotidianos de distintos
+              tipos de negocios.
+            </p>
+          </motion.div>
 
-                <div
-                  className="
-              grid
-              grid-cols-2
-              gap-3
-              md:grid-cols-5
-            "
-                >
-                  {negocios.map(({ icon: Icon, nombre }, index) => (
-                    <motion.div
-                      key={nombre}
-                      initial={{
-                        opacity: 0,
-                        y: 15,
-                      }}
-                      whileInView={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      viewport={{
-                        once: true,
-                      }}
-                      transition={{
-                        delay: index * 0.07,
-                        duration: 0.4,
-                      }}
-                      whileHover={{
-                        y: -4,
-                      }}
-                      className="
-                  flex
-                  items-center
-                  justify-center
-                  gap-3
-                  rounded-xl
-                  border border-white/[0.07]
-                  bg-white/[0.025]
-                  px-4 py-4
-                  text-sm
-                  text-slate-400
-                  transition
-                  hover:border-white/15
-                  hover:bg-white/5
-                  hover:text-white
-                "
-                    >
-                      <Icon size={19} />
+          {/* =====================================================
+        TIPOS DE NEGOCIOS
+    ===================================================== */}
 
-                      {nombre}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* BOTONES */}
+          <div className="mt-14">
+            <motion.p
+              initial={{
+                opacity: 0,
+                y: 15,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              className="
+          mb-5
+          text-sm
+          text-slate-500
+        "
+            >
+              Soluciones para distintos tipos de negocios
+            </motion.p>
 
             <div
               className="
-                mt-9
+          grid
+          grid-cols-2
+          gap-4
+          md:grid-cols-3
+          lg:grid-cols-5
+        "
+            >
+              {negocios.map(({ icon: Icon, nombre }, index) => (
+                <motion.div
+                  key={nombre}
+                  initial={{
+                    opacity: 0,
+                    y: 20,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.3,
+                  }}
+                  transition={{
+                    delay: index * 0.07,
+                    duration: 0.4,
+                  }}
+                  whileHover={{
+                    y: -5,
+                  }}
+                  className="
+              group
+
+              flex
+              min-h-[120px]
+              flex-col
+              items-start
+              justify-between
+
+              rounded-2xl
+
+              border
+              border-white/[0.08]
+
+              bg-white/[0.025]
+
+              p-5
+
+              transition-colors
+
+              hover:border-indigo-400/25
+              hover:bg-white/[0.05]
+            "
+                >
+                  <div
+                    className="
                 flex
-                w-full
-                flex-col
+                h-10 w-10
                 items-center
                 justify-center
-                gap-3
-                sm:w-auto
-                sm:flex-row
-              "
-            >
-              <motion.a
-                whileHover={{
-                  y: -3,
-                }}
-                href={whatsappLink}
-                target="_blank"
-                rel="noreferrer"
-                className="
-                  flex
-                  w-full
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  bg-gradient-to-r
-                  from-indigo-500
-                  to-violet-500
-                  px-7 py-4
-                  font-semibold
-                  shadow-lg
-                  shadow-indigo-500/20
-                  sm:w-auto
-                "
-              >
-                <MessageCircle size={20} />
-                Tengo una idea
-              </motion.a>
 
-              <a
-                href="#servicios"
-                className="
-                  flex
-                  w-full
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  border border-white/10
-                  bg-white/5
-                  px-7 py-4
-                  font-medium
-                  backdrop-blur-sm
-                  transition
-                  hover:bg-white/10
-                  sm:w-auto
-                "
-              >
-                Ver qué puedo hacer
-                <ChevronRight size={18} />
-              </a>
+                rounded-xl
+
+                border
+                border-indigo-400/15
+
+                bg-indigo-400/10
+
+                text-indigo-400
+
+                transition-transform
+                duration-300
+
+                group-hover:scale-110
+              "
+                  >
+                    <Icon size={19} />
+                  </div>
+
+                  <p
+                    className="
+                mt-5
+                text-sm
+                font-medium
+                text-slate-300
+
+                transition-colors
+
+                group-hover:text-white
+              "
+                  >
+                    {nombre}
+                  </p>
+                </motion.div>
+              ))}
             </div>
+          </div>
+
+          {/* =====================================================
+        CTA
+    ===================================================== */}
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.5,
+              delay: 0.2,
+            }}
+            className="
+        mt-10
+
+        flex
+        flex-col
+        gap-3
+
+        sm:flex-row
+        sm:items-center
+      "
+          >
+            <motion.a
+              whileHover={{
+                y: -3,
+              }}
+              whileTap={{
+                scale: 0.98,
+              }}
+              href={whatsappLink}
+              target="_blank"
+              rel="noreferrer"
+              className="
+          flex
+          items-center
+          justify-center
+          gap-2
+
+          rounded-xl
+
+          bg-gradient-to-r
+          from-indigo-500
+          to-violet-500
+
+          px-6 py-3.5
+
+          text-sm
+          font-semibold
+          text-white
+
+          shadow-lg
+          shadow-indigo-500/20
+
+          transition
+
+          sm:w-auto
+        "
+            >
+              <MessageCircle size={18} />
+              Tengo una idea
+            </motion.a>
+
+            <a
+              href="#servicios"
+              className="
+          flex
+          items-center
+          justify-center
+          gap-2
+
+          rounded-xl
+
+          border
+          border-white/10
+
+          bg-white/[0.035]
+
+          px-6 py-3.5
+
+          text-sm
+          font-medium
+          text-slate-300
+
+          transition
+
+          hover:border-white/20
+          hover:bg-white/[0.07]
+          hover:text-white
+
+          sm:w-auto
+        "
+            >
+              Ver servicios
+              <ChevronRight size={17} />
+            </a>
           </motion.div>
         </div>
       </section>
@@ -1645,7 +2062,6 @@ text-white
                   to-cyan-400
                 "
               >
-                <Zap size={16} />
               </div>
               Facundo Joaquín Gil
             </div>

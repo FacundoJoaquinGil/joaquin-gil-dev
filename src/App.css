@@ -4,7 +4,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 74px;
+  scroll-padding-top: 95px;
 }
 
 body {
@@ -68,26 +68,7 @@ button {
   isolation: isolate;
 }
 
-/*
-  Evitamos filtros o transformaciones innecesarias
-  sobre la imagen para conservar la mejor calidad
-  posible del archivo original.
-*/
 
-.profile-image {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  object-position: center top;
-
-  image-rendering: auto;
-
-  user-select: none;
-  -webkit-user-drag: none;
-}
 
 /* =========================================================
    PARTÍCULAS
