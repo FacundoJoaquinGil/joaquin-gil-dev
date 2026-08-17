@@ -16,10 +16,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
+    environment:
+      name: github-pages
+      deployment: false
+
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -31,6 +37,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Check EmailJS variables
+        run: |
+          echo "SERVICE_ID: ${{ vars.VITE_EMAILJS_SERVICE_ID != '' }}"
+          echo "TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID != '' }}"
+          echo "PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY != '' }}"
 
       - name: Build
         run: npm run build
@@ -47,6 +59,7 @@ jobs:
         with:
           path: "./dist"
 
+
   deploy:
     environment:
       name: github-pages
@@ -56,6 +69,7 @@ jobs:
     needs: build
 
     steps:
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
