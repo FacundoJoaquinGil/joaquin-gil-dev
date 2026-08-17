@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Particles from "@tsparticles/react";
+import emailjs from "@emailjs/browser";
+import Swal from "sweetalert2";
 
 import logoJ from "./assets/logo.png";
 import fotoperfil from "./assets/perfil.png";
+import loaderGif from "./assets/loader.gif";
 
 import {
   ArrowRight,
@@ -216,6 +221,76 @@ const AnimatedCounter = ({
   );
 };
 
+const SectionDivider = () => {
+  return (
+    <div
+      className="
+        relative z-10
+        mx-auto
+        flex
+        w-full
+        max-w-7xl
+        items-center
+        justify-center
+        px-5
+        sm:px-8
+      "
+      aria-hidden="true"
+    >
+      <div
+        className="
+          relative
+          h-px
+          w-full
+          overflow-visible
+          bg-gradient-to-r
+          from-transparent
+          via-white/10
+          to-transparent
+        "
+      >
+        <div
+          className="
+            absolute
+            left-1/2
+            top-1/2
+
+            h-px
+            w-32
+
+            -translate-x-1/2
+            -translate-y-1/2
+
+            bg-gradient-to-r
+            from-transparent
+            via-indigo-400/70
+            to-transparent
+
+            sm:w-48
+          "
+        />
+
+        <div
+          className="
+            absolute
+            left-1/2
+            top-1/2
+
+            h-2
+            w-20
+
+            -translate-x-1/2
+            -translate-y-1/2
+
+            bg-indigo-500/20
+            blur-xl
+          "
+        />
+      </div>
+    </div>
+  );
+};
+
 /* =========================================================
    CONFIGURACIÓN DE PARTÍCULAS
 ========================================================= */
@@ -305,6 +380,25 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const form = useRef(null);
+
+  const [isSending, setIsSending] = useState(false);
+
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  useEffect(() => {
+    AOS.init({
+      duration: 650,
+      easing: "ease-out-cubic",
+      once: true,
+      offset: 80,
+    });
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
@@ -320,6 +414,111 @@ function App() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const validarFormulario = () => {
+    if (!form.current) return false;
+
+    const userName = form.current.user_name.value.trim();
+    const userEmail = form.current.user_email.value.trim();
+    const message = form.current.message.value.trim();
+
+    if (!userName || !userEmail || !message) {
+      Swal.fire({
+        icon: "warning",
+        title: "Faltan algunos datos",
+        text: "Completá tu nombre, email y contame brevemente tu idea.",
+        background: "#0b101c",
+        color: "#ffffff",
+        confirmButtonColor: "#6366f1",
+      });
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const sendEmail = async (e) => {
+    e.preventDefault();
+
+    if (!validarFormulario()) {
+      return;
+    }
+
+    try {
+      setIsSending(true);
+
+      Swal.fire({
+        html: `
+    <div style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    ">
+      <img
+        src="${loaderGif}"
+        alt="Enviando..."
+        style="
+          width: 70px;
+          height: 70px;
+          object-fit: contain;
+          border-radius: 10px;
+        "
+      />
+
+      <span style="
+        font-size: 1.05rem;
+        color: #e2e8f0;
+      ">
+        Enviando mensaje...
+      </span>
+    </div>
+  `,
+        background: "#0b101c",
+        color: "#ffffff",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+      });
+
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        form.current,
+        {
+          publicKey: EMAILJS_PUBLIC_KEY,
+        },
+      );
+
+      await Swal.fire({
+        icon: "success",
+        title: "¡Mensaje enviado!",
+        text: "Gracias por contactarme. Voy a responderte lo antes posible.",
+        background: "#0b101c",
+        color: "#ffffff",
+        confirmButtonColor: "#6366f1",
+        confirmButtonText: "Perfecto",
+      });
+
+      form.current.reset();
+    } catch (error) {
+      console.error("Error al enviar el email:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "No se pudo enviar",
+        text: "Ocurrió un problema al enviar el mensaje. Podés intentarlo nuevamente o contactarme por WhatsApp.",
+        background: "#0b101c",
+        color: "#ffffff",
+        confirmButtonColor: "#6366f1",
+        confirmButtonText: "Entendido",
+      });
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   const whatsapp = "3816566750";
 
@@ -431,20 +630,20 @@ function App() {
     `}
         >
           {/* LOGO */}
-<a
-  href="#sobre-mi"
-  onClick={() => setMenuOpen(false)}
-  className="
+          <a
+            href="#sobre-mi"
+            onClick={() => setMenuOpen(false)}
+            className="
     flex
     shrink-0
     items-center
     gap-3
     font-semibold
   "
->
-  {/* LOGO J */}
-  <div
-    className={`
+          >
+            {/* LOGO J */}
+            <div
+              className={`
       flex
       items-center
       justify-center
@@ -456,20 +655,19 @@ function App() {
 
       ${isScrolled ? "h-10 w-10" : "h-12 w-12"}
     `}
-  >
-    <img
-  src={logoJ}
-  alt="Logo Joaquín"
-  className="
+            >
+              <img
+                src={logoJ}
+                alt="Logo Joaquín"
+                className="
     h-full
     w-full
-    rounded-xl
+    rounded-md
     object-contain
   "
-/>
-  </div>
-
-</a>
+              />
+            </div>
+          </a>
 
           {/* =====================================================
         DESKTOP
@@ -821,26 +1019,26 @@ function App() {
           >
             {/* FOTO */}
 
-<motion.div
-  initial={{
-    opacity: 0,
-  }}
-  animate={{
-    opacity: 1,
-  }}
-  transition={{
-    duration: 0.7,
-    ease: "easeOut",
-  }}
-  className="
+            <motion.div
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.7,
+                ease: "easeOut",
+              }}
+              className="
     mx-auto
     w-full
     max-w-[410px]
     lg:mx-0
   "
->
-  <div
-    className="
+            >
+              <div
+                className="
       profile-image-wrapper
       relative
       aspect-[4/5]
@@ -852,15 +1050,15 @@ function App() {
       shadow-2xl
       shadow-indigo-500/10
     "
-  >
-    <img
-      src={fotoperfil}
-      alt="Joaquín Gil"
-      loading="eager"
-      fetchPriority="high"
-      decoding="sync"
-      draggable={false}
-      className="
+              >
+                <img
+                  src={fotoperfil}
+                  alt="Joaquín Gil"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                  draggable={false}
+                  className="
         block
         h-full
         w-full
@@ -868,9 +1066,9 @@ function App() {
         object-cover
         object-top
       "
-    />
-  </div>
-</motion.div>
+                />
+              </div>
+            </motion.div>
 
             {/* INFORMACIÓN */}
 
@@ -1014,22 +1212,8 @@ function App() {
               ESTADÍSTICAS
           ===================================================== */}
 
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 30,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.3,
-            }}
-            transition={{
-              duration: 0.6,
-            }}
+          <div
+            data-aos="fade-up"
             className="
               mt-16
               grid
@@ -1043,21 +1227,9 @@ function App() {
           >
             {/* EXPERIENCIA */}
 
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-              }}
-              transition={{
-                delay: 0.1,
-              }}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="100"
               className="
                 group
                 flex items-center gap-5
@@ -1100,25 +1272,13 @@ function App() {
                   años de experiencia
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {/* PROYECTOS */}
 
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-              }}
-              transition={{
-                delay: 0.2,
-              }}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="200"
               className="
                 group
                 flex items-center gap-5
@@ -1161,25 +1321,13 @@ function App() {
                   proyectos realizados
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {/* FORMACIÓN */}
 
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-              }}
-              transition={{
-                delay: 0.3,
-              }}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="300"
               className="
                 group
                 flex items-center gap-5
@@ -1230,35 +1378,35 @@ function App() {
                   en Programación
                 </p>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
-{/* =====================================================
+        {/* =====================================================
     INDICADOR DE SCROLL
 ===================================================== */}
 
-<motion.a
-  href="#propuesta"
-  aria-label="Desplazarse a la siguiente sección"
-  initial={{
-    opacity: 0,
-  }}
-  animate={{
-    opacity: isScrolled ? 0 : 1,
-    y: [0, 7, 0],
-  }}
-  transition={{
-    opacity: {
-      duration: 0.3,
-    },
-    y: {
-      duration: 1.6,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  }}
-  className={`
+        <motion.a
+          href="#propuesta"
+          aria-label="Desplazarse a la siguiente sección"
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: isScrolled ? 0 : 1,
+            y: [0, 7, 0],
+          }}
+          transition={{
+            opacity: {
+              duration: 0.3,
+            },
+            y: {
+              duration: 1.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          }}
+          className={`
     fixed
     bottom-6
     right-6
@@ -1271,16 +1419,11 @@ function App() {
 
     hover:text-indigo-400
 
-    ${
-      isScrolled
-        ? "pointer-events-none"
-        : "pointer-events-auto"
-    }
+    ${isScrolled ? "pointer-events-none" : "pointer-events-auto"}
   `}
->
-  <ChevronDown size={28} strokeWidth={1.8} />
-</motion.a>
-
+        >
+          <ChevronDown size={28} strokeWidth={1.8} />
+        </motion.a>
       </section>
 
       {/* =====================================================
@@ -1307,22 +1450,8 @@ function App() {
         ENCABEZADO
     ===================================================== */}
 
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 25,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.3,
-            }}
-            transition={{
-              duration: 0.6,
-            }}
+          <div
+            data-aos="fade-up"
             className="max-w-3xl"
           >
             <span
@@ -1374,25 +1503,15 @@ function App() {
               organizar información y resolver problemas cotidianos de distintos
               tipos de negocios.
             </p>
-          </motion.div>
+          </div>
 
           {/* =====================================================
         TIPOS DE NEGOCIOS
     ===================================================== */}
 
           <div className="mt-14">
-            <motion.p
-              initial={{
-                opacity: 0,
-                y: 15,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-              }}
+            <p
+              data-aos="fade-up"
               className="
           mb-5
           text-sm
@@ -1400,7 +1519,7 @@ function App() {
         "
             >
               Soluciones para distintos tipos de negocios
-            </motion.p>
+            </p>
 
             <div
               className="
@@ -1412,27 +1531,10 @@ function App() {
         "
             >
               {negocios.map(({ icon: Icon, nombre }, index) => (
-                <motion.div
+                <div
                   key={nombre}
-                  initial={{
-                    opacity: 0,
-                    y: 20,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    amount: 0.3,
-                  }}
-                  transition={{
-                    delay: index * 0.07,
-                    duration: 0.4,
-                  }}
-                  whileHover={{
-                    y: -5,
-                  }}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
                   className="
               group
 
@@ -1451,8 +1553,10 @@ function App() {
 
               p-5
 
-              transition-colors
+              transition-all
+              duration-300
 
+              hover:-translate-y-1
               hover:border-indigo-400/25
               hover:bg-white/[0.05]
             "
@@ -1496,7 +1600,7 @@ function App() {
                   >
                     {nombre}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -1505,22 +1609,9 @@ function App() {
         CTA
     ===================================================== */}
 
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 20,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.5,
-              delay: 0.2,
-            }}
+          <div
+            data-aos="fade-up"
+            data-aos-delay="200"
             className="
         mt-10
 
@@ -1605,9 +1696,11 @@ function App() {
               Ver servicios
               <ChevronRight size={17} />
             </a>
-          </motion.div>
+          </div>
         </div>
       </section>
+
+      <SectionDivider />
 
       {/* =====================================================
           SERVICIOS
@@ -1628,18 +1721,8 @@ function App() {
             sm:px-8
           "
         >
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 25,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
+          <div
+            data-aos="fade-up"
             className="max-w-3xl"
           >
             <span
@@ -1675,7 +1758,7 @@ function App() {
               Desde una página sencilla hasta un sistema completo para organizar
               tu negocio.
             </p>
-          </motion.div>
+          </div>
 
           <div
             className="
@@ -1686,27 +1769,10 @@ function App() {
             "
           >
             {servicios.map(({ icon: Icon, titulo, descripcion }, index) => (
-              <motion.article
+              <article
                 key={titulo}
-                initial={{
-                  opacity: 0,
-                  y: 25,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                  amount: 0.2,
-                }}
-                transition={{
-                  delay: index * 0.06,
-                  duration: 0.45,
-                }}
-                whileHover={{
-                  y: -6,
-                }}
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
                 className="
                     group
                     rounded-2xl
@@ -1714,7 +1780,9 @@ function App() {
                     bg-white/[0.035]
                     p-7
                     backdrop-blur-md
-                    transition-colors
+                    transition-all
+                    duration-300
+                    hover:-translate-y-1.5
                     hover:border-indigo-400/30
                     hover:bg-white/[0.06]
                   "
@@ -1744,30 +1812,13 @@ function App() {
                 >
                   {descripcion}
                 </p>
-
-                <div
-                  className="
-                      mt-6
-                      flex items-center gap-2
-                      text-sm
-                      font-medium
-                      text-indigo-400
-                    "
-                >
-                  Puede adaptarse a tu negocio
-                  <ArrowRight
-                    size={15}
-                    className="
-                        transition-transform
-                        group-hover:translate-x-1
-                      "
-                  />
-                </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </div>
       </section>
+
+      <SectionDivider />
 
       {/* =====================================================
           CÓMO TRABAJO
@@ -1788,18 +1839,8 @@ function App() {
             sm:px-8
           "
         >
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 25,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
+          <div
+            data-aos="fade-up"
             className="text-center"
           >
             <span
@@ -1837,7 +1878,7 @@ function App() {
               Alcanzan una idea, un problema o una tarea que quieras
               simplificar.
             </p>
-          </motion.div>
+          </div>
 
           <div
             className="
@@ -1847,31 +1888,18 @@ function App() {
             "
           >
             {pasos.map((paso, index) => (
-              <motion.div
+              <div
                 key={paso.numero}
-                initial={{
-                  opacity: 0,
-                  y: 30,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  delay: index * 0.12,
-                }}
-                whileHover={{
-                  y: -5,
-                }}
+                data-aos="fade-up"
+                data-aos-delay={index * 150}
                 className="
                   rounded-2xl
                   border border-white/[0.08]
                   bg-white/[0.025]
                   p-8
-                  transition-colors
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
                   hover:border-white/[0.14]
                   hover:bg-white/[0.04]
                 "
@@ -1907,198 +1935,532 @@ function App() {
                 >
                   {paso.descripcion}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* =====================================================
-          CTA
-      ===================================================== */}
+    CONTACTO
+===================================================== */}
 
       <section
         id="contacto"
         className="
-          relative z-10
-          px-5 py-24
-          sm:px-8
-          sm:py-32
-        "
+    relative z-10
+    py-24
+    sm:py-32
+  "
       >
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
+        <div
           className="
-            relative
-            mx-auto
-            max-w-6xl
-            overflow-hidden
-            rounded-[32px]
-            border border-indigo-400/20
-            bg-gradient-to-br
-            from-indigo-600/20
-            via-violet-500/10
-            to-cyan-500/10
-            px-6 py-16
-            text-center
-            sm:px-12
-            sm:py-20
-          "
+      mx-auto
+      max-w-7xl
+      px-5
+      sm:px-8
+    "
         >
-          <div
-            className="
-              absolute
-              left-1/2 top-0
-              h-[300px] w-[500px]
-              -translate-x-1/2
-              bg-indigo-500/15
-              blur-[120px]
-            "
-          />
+          {/* =====================================================
+        ENCABEZADO
+    ===================================================== */}
 
-          <div className="relative z-10">
-            <MessageCircle size={35} className="mx-auto text-indigo-400" />
+          <div
+            data-aos="fade-up"
+            className="max-w-3xl"
+          >
+            <span
+              className="
+          text-sm
+          font-semibold
+          uppercase
+          tracking-[0.2em]
+          text-indigo-400
+        "
+            >
+              Contacto
+            </span>
 
             <h2
               className="
-                mx-auto mt-6
-                max-w-3xl
-                text-4xl font-bold
-                tracking-tight
-                sm:text-5xl
-              "
+          mt-4
+          text-4xl
+          font-bold
+          tracking-tight
+          sm:text-5xl
+        "
             >
-              ¿Tenés una idea para tu negocio?
+              ¿Tenés una idea para{" "}
+              <span
+                className="
+            bg-gradient-to-r
+            from-indigo-400
+            via-violet-400
+            to-cyan-400
+            bg-clip-text
+            text-transparent
+          "
+              >
+                tu negocio?
+              </span>
             </h2>
 
             <p
               className="
-                mx-auto mt-5
-                max-w-xl
-                text-lg
-                leading-8
-                text-slate-400
-              "
+          mt-5
+          max-w-2xl
+          text-lg
+          leading-8
+          text-slate-400
+        "
             >
               Contame qué querés mejorar, automatizar u organizar. No hace falta
-              que sepas qué tecnología necesitás: podemos encontrar juntos la
-              solución adecuada.
+              que sepas qué tecnología necesitás: podemos encontrar una solución
+              adecuada para tu negocio.
             </p>
-
-            <motion.a
-              whileHover={{
-                scale: 1.03,
-              }}
-              whileTap={{
-                scale: 0.98,
-              }}
-              href={whatsappLink}
-              target="_blank"
-              rel="noreferrer"
-              className="
-                mt-9
-                inline-flex
-                items-center gap-3
-                rounded-xl
-                bg-gradient-to-r
-from-indigo-500
-to-violet-500
-text-white
-                px-7 py-4
-                font-semibold
-                text-slate-900
-                shadow-xl
-              "
-            >
-              <MessageCircle size={20} />
-              Hablar por WhatsApp
-              <ArrowRight size={18} />
-            </motion.a>
           </div>
-        </motion.div>
-      </section>
 
-      {/* =====================================================
-          FOOTER
+          {/* =====================================================
+        CONTENIDO
+    ===================================================== */}
+
+          <div
+            className="
+        mt-14
+        grid
+        gap-6
+        lg:grid-cols-[0.8fr_1.2fr]
+        lg:gap-8
+      "
+          >
+            {/* =====================================================
+          INFORMACIÓN
       ===================================================== */}
 
-      <footer
-        className="
-          relative z-10
-          border-t border-white/[0.07]
+            <div
+              data-aos="fade-right"
+              className="
+               h-full
+          relative
+          overflow-hidden
+
+          rounded-2xl
+
+          border
+          border-white/[0.08]
+
+          bg-white/[0.025]
+
+          p-7
+
+          sm:p-8
         "
-      >
-        <div
-          className="
-            mx-auto
-            flex max-w-7xl
-            flex-col gap-7
-            px-5 py-10
-            sm:px-8
-            md:flex-row
-            md:items-center
-            md:justify-between
-          "
-        >
-          <div>
-            <div className="flex items-center gap-2 font-semibold">
+            >
+              {/* LUZ DECORATIVA */}
+
               <div
                 className="
-                  flex h-8 w-8
-                  items-center justify-center
-                  rounded-lg
-                  bg-gradient-to-br
-                  from-indigo-500
-                  to-cyan-400
-                "
-              >
+            pointer-events-none
+            absolute
+            -left-20
+            -top-20
+
+            h-60
+            w-60
+
+            rounded-full
+
+            bg-indigo-500/10
+
+            blur-[100px]
+          "
+              />
+
+              <div className="relative z-10 flex h-full flex-col">
+                <div
+                  className="
+              flex
+              h-12 w-12
+              items-center
+              justify-center
+
+              rounded-xl
+
+              border
+              border-indigo-400/20
+
+              bg-indigo-400/10
+
+              text-indigo-400
+            "
+                >
+                  <MessageCircle size={22} />
+                </div>
+
+                <h3
+                  className="
+              mt-7
+              text-2xl
+              font-semibold
+              text-white
+            "
+                >
+                  Hablemos de tu idea.
+                </h3>
+
+                <p
+                  className="
+              mt-4
+              max-w-md
+              leading-7
+              text-slate-400
+            "
+                >
+                  Podés contarme brevemente qué problema querés resolver o qué
+                  proceso de tu negocio te gustaría simplificar.
+                </p>
+
+                {/* WHATSAPP */}
+
+<div
+  className="
+    mt-auto
+    border-t
+    border-white/[0.07]
+    pt-6
+  "
+>
+  <p
+    className="
+      mb-4
+      text-sm
+      text-slate-500
+    "
+  >
+    ¿Preferís una conversación más directa?
+  </p>
+
+  <motion.a
+    whileHover={{
+      y: -2,
+    }}
+    href={whatsappLink}
+    target="_blank"
+    rel="noreferrer"
+    className="
+      flex
+      w-full
+      items-center
+      justify-center
+      gap-2
+
+      rounded-xl
+
+      border
+      border-emerald-400/20
+
+      bg-emerald-400/[0.07]
+
+      px-5
+      py-3.5
+
+      text-sm
+      font-medium
+      text-emerald-300
+
+      transition-colors
+
+      hover:border-emerald-400/35
+      hover:bg-emerald-400/[0.12]
+      hover:text-emerald-200
+    "
+  >
+    <MessageCircle size={18} />
+
+    Hablar por WhatsApp
+
+    <ArrowRight size={16} />
+  </motion.a>
+</div>
               </div>
-              Facundo Joaquín Gil
             </div>
 
-            <p className="mt-3 text-sm text-slate-500">
-              Técnico Universitario en Programación · Soluciones digitales para
-              negocios.
-            </p>
+            {/* =====================================================
+          FORMULARIO
+      ===================================================== */}
 
-            <p className="mt-1 text-xs text-slate-600">
-              Bella Vista, Tucumán, Argentina
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="WhatsApp"
+            <div
+              data-aos="fade-left"
+              data-aos-delay="100"
               className="
-                flex h-10 w-10
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-white/5
-                text-slate-400
-                transition
-                hover:bg-white/10
-                hover:text-white
-              "
+          relative
+
+          rounded-2xl
+
+          border
+          border-white/[0.08]
+
+          bg-white/[0.035]
+
+          p-6
+
+          backdrop-blur-xl
+
+          sm:p-8
+        "
             >
-              <MessageCircle size={18} />
-            </a>
+              <form ref={form} onSubmit={sendEmail} className="space-y-6">
+                {/* NOMBRE + EMAIL */}
+
+                <div
+                  className="
+              grid
+              gap-5
+              sm:grid-cols-2
+            "
+                >
+                  {/* NOMBRE */}
+
+                  <div>
+                    <label
+                      htmlFor="user_name"
+                      className="
+                  mb-2
+                  block
+
+                  text-sm
+                  font-medium
+                  text-slate-300
+                "
+                    >
+                      Nombre
+                    </label>
+
+                    <input
+                      id="user_name"
+                      name="user_name"
+                      type="text"
+                      autoComplete="name"
+                      placeholder="Tu nombre"
+                      required
+                      className="
+                  w-full
+
+                  rounded-xl
+
+                  border
+                  border-white/[0.08]
+
+                  bg-[#070b14]/70
+
+                  px-4
+                  py-3.5
+
+                  text-sm
+                  text-white
+
+                  outline-none
+
+                  transition-all
+
+                  placeholder:text-slate-600
+
+                  hover:border-white/[0.15]
+
+                  focus:border-indigo-400/60
+                  focus:ring-4
+                  focus:ring-indigo-500/10
+                "
+                    />
+                  </div>
+
+                  {/* EMAIL */}
+
+                  <div>
+                    <label
+                      htmlFor="user_email"
+                      className="
+                  mb-2
+                  block
+
+                  text-sm
+                  font-medium
+                  text-slate-300
+                "
+                    >
+                      Email
+                    </label>
+
+                    <input
+                      id="user_email"
+                      name="user_email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="tu@email.com"
+                      required
+                      className="
+                  w-full
+
+                  rounded-xl
+
+                  border
+                  border-white/[0.08]
+
+                  bg-[#070b14]/70
+
+                  px-4
+                  py-3.5
+
+                  text-sm
+                  text-white
+
+                  outline-none
+
+                  transition-all
+
+                  placeholder:text-slate-600
+
+                  hover:border-white/[0.15]
+
+                  focus:border-indigo-400/60
+                  focus:ring-4
+                  focus:ring-indigo-500/10
+                "
+                    />
+                  </div>
+                </div>
+
+                {/* NEGOCIO */}
+
+                {/* MENSAJE */}
+
+                <div>
+                  <div
+                    className="
+                mb-2
+                flex
+                items-center
+                justify-between
+                gap-4
+              "
+                  >
+                    <label
+                      htmlFor="message"
+                      className="
+                  text-sm
+                  font-medium
+                  text-slate-300
+                "
+                    >
+                      Contame tu idea
+                    </label>
+                  </div>
+
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={7}
+                    required
+                    placeholder="Ej: Tengo un kiosco y actualmente llevo el stock manualmente. Me gustaría poder registrar productos y saber cuándo necesito reponer..."
+                    className="
+                min-h-[180px]
+                w-full
+
+                resize-y
+
+                rounded-xl
+
+                border
+                border-white/[0.08]
+
+                bg-[#070b14]/70
+
+                px-4
+                py-3.5
+
+                text-sm
+                leading-6
+                text-white
+
+                outline-none
+
+                transition-all
+
+                placeholder:text-slate-600
+
+                hover:border-white/[0.15]
+
+                focus:border-indigo-400/60
+                focus:ring-4
+                focus:ring-indigo-500/10
+              "
+                  />
+                </div>
+
+                {/* SUBMIT */}
+
+                <div
+                  className="
+              flex
+              flex-col
+              gap-4
+
+              border-t
+              border-white/[0.07]
+
+              pt-6
+
+              sm:flex-row
+              sm:items-center
+              sm:justify-between
+            "
+                >
+                  <button
+  type="submit"
+  disabled={isSending}
+  className="
+    flex
+    min-w-[170px]
+    items-center
+    justify-center
+    gap-2
+
+    rounded-xl
+
+    bg-gradient-to-r
+    from-indigo-500
+    to-violet-500
+
+    px-6
+    py-3.5
+
+    text-sm
+    font-semibold
+    text-white
+
+    shadow-lg
+    shadow-indigo-500/20
+
+    transition
+
+    hover:shadow-indigo-500/30
+
+    disabled:cursor-not-allowed
+    disabled:opacity-60
+  "
+>
+  Enviar mensaje
+
+  <ArrowRight size={17} />
+</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </footer>
+      </section>
     </main>
   );
 }
