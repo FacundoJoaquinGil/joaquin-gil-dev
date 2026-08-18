@@ -1,51 +1,8 @@
 # 🚀 Joaquín Gil - Desarrollador de Software y Soluciones Tecnológicas
 
 ¡Bienvenido al repositorio de mi portafolio personal! 
+<br>
 Puedes visitar la página en vivo aquí: **[joaquin-gil-dev](https://facundojoaquingil.github.io/joaquin-gil-dev/)**
-
-## 👨‍💻 Sobre Mí
-Soy desarrollador de software y profesor de bases de datos. Me especializo en diseñar y construir soluciones a medida, abarcando desde aplicaciones de escritorio robustas hasta plataformas web dinámicas. Este portafolio está estructurado para exhibir mis servicios profesionales como programador, facilitando a los clientes conocer mi trabajo y encontrar la herramienta tecnológica ideal para impulsar sus negocios.
-
-## 🛠️ Tecnologías y Habilidades
-Mi stack tecnológico y áreas de experiencia incluyen:
-- **Desarrollo Web (Full-Stack):** JavaScript, Node.js, Express.
-- **Aplicaciones de Escritorio:** C#, Visual Basic, Windows Forms.
-- **Bases de Datos:** Diseño, normalización, indexación y optimización de consultas en entornos **SQL y NoSQL**.
-- **Arquitectura y Modelado:** Estructuración de proyectos, migración de servicios y diseño lógico de bases de datos.
-
-## 💼 Servicios que Ofrezco
-- **Desarrollo de Software a Medida:** Creación de aplicaciones desde cero adaptadas completamente a los requerimientos del cliente.
-- **Sistemas de Gestión Institucional y Comercial:** Software para administración de entidades (sistemas escolares, control de talleres, inventarios, etc.).
-- **Consultoría en Bases de Datos:** Mejoras de rendimiento, auditorías y diseño de esquemas eficientes.
-
-## 📂 Ejemplos de Proyectos
-Algunas de las soluciones que he desarrollado incluyen:
-- **Gestión Escolar:** Aplicación de escritorio orientada a la administración educativa, construida con Windows Forms y Visual Basic.
-- **Sistema para Taller Mecánico:** Plataforma de gestión de presupuestos, clientes y control de kilometraje desarrollada en C#.
-- **Task Manager Web:** Gestor de tareas con arquitectura cliente-servidor, implementando un backend escalable con Node.js y Express.
-
-## 🚀 Instalación y Desarrollo Local
-Si deseas clonar este repositorio para ver el código fuente:
-```bash
-# Clonar el repositorio
-git clone https://github.com/FacundoJoaquinGil/joaquin-gil-dev.git
-
-# Entrar al directorio
-cd joaquin-gil-dev
-
-# Instalar dependencias (ejemplo si usas npm)
-npm install
-
-# Iniciar el entorno de desarrollo
-npm run dev
-```
-
-## 📞 Contacto y Contrataciones
-¿Interesado en trabajar juntos, encargar un proyecto o recibir asesoría? Puedes contactarme a través de los siguientes medios:
-
-- **WhatsApp/Teléfono:** [+54 9 381 656-6750](https://wa.me/5493816566750)
-- **LinkedIn:** [Enlace a tu LinkedIn]
-- **Email:** [Tu correo de contacto]
 
 ---
 *Diseñado y desarrollado por Joaquín Gil.*
