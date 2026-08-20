@@ -1426,7 +1426,7 @@ function App() {
         </motion.a>
       </section>
 
-      <SectionDivider />
+      
 
       {/* =====================================================
           CÓMO TRABAJO
@@ -1549,6 +1549,8 @@ function App() {
         </div>
       </section>
 
+      <SectionDivider/>
+
       {/* =====================================================
     PROPUESTA
 ===================================================== */}
@@ -1645,87 +1647,88 @@ function App() {
             </p>
 
             <div
-              className="
-          grid
-          grid-cols-2
-          gap-4
-          md:grid-cols-3
-          lg:grid-cols-5
+  className="
+    grid
+    grid-cols-2
+    gap-4
+    md:grid-cols-3
+    lg:grid-cols-5
+  "
+>
+  {negocios.map(({ icon: Icon, nombre }, index) => (
+    <div
+      key={nombre}
+      data-aos="fade-up"
+      data-aos-delay={index * 100}
+      className="
+        group
+
+        flex
+        flex-row
+        items-center
+        gap-4
+
+        min-h-[90px]
+
+        rounded-2xl
+
+        border
+        border-white/[0.08]
+
+        bg-white/[0.025]
+
+        p-5
+
+        transition-all
+        duration-300
+
+        hover:-translate-y-1
+        hover:border-indigo-400/25
+        hover:bg-white/[0.05]
+      "
+    >
+      <div
+        className="
+          flex
+          h-10 w-10
+          shrink-0
+          items-center
+          justify-center
+
+          rounded-xl
+
+          border
+          border-indigo-400/15
+
+          bg-indigo-400/10
+
+          text-indigo-400
+
+          transition-transform
+          duration-300
+
+          group-hover:scale-110
         "
-            >
-              {negocios.map(({ icon: Icon, nombre }, index) => (
-                <div
-                  key={nombre}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                  className="
-              group
+      >
+        <Icon size={19} />
+      </div>
 
-              flex
-              min-h-[120px]
-              flex-col
-              items-start
-              justify-between
+      <p
+        className="
+          text-sm
+          font-medium
+          text-slate-300
 
-              rounded-2xl
+          transition-colors
 
-              border
-              border-white/[0.08]
-
-              bg-white/[0.025]
-
-              p-5
-
-              transition-all
-              duration-300
-
-              hover:-translate-y-1
-              hover:border-indigo-400/25
-              hover:bg-white/[0.05]
-            "
-                >
-                  <div
-                    className="
-                flex
-                h-10 w-10
-                items-center
-                justify-center
-
-                rounded-xl
-
-                border
-                border-indigo-400/15
-
-                bg-indigo-400/10
-
-                text-indigo-400
-
-                transition-transform
-                duration-300
-
-                group-hover:scale-110
-              "
-                  >
-                    <Icon size={19} />
-                  </div>
-
-                  <p
-                    className="
-                mt-5
-                text-sm
-                font-medium
-                text-slate-300
-
-                transition-colors
-
-                group-hover:text-white
-              "
-                  >
-                    {nombre}
-                  </p>
-                </div>
-              ))}
-            </div>
+          group-hover:text-white
+        "
+      >
+        {nombre}
+      </p>
+    </div>
+  ))}
+</div>
           </div>
 
           {/* =====================================================
