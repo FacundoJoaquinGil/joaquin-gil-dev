@@ -535,13 +535,13 @@ function App() {
       ===================================================== */}
 
       <div className="pointer-events-none fixed inset-0 z-0">
-        {/* <Particles
+        <Particles
           id="particles"
           options={particlesOptions}
           className="absolute inset-0 h-full w-full"
-        /> */}
+        />
 
-        <div
+        {/* <div
           className="
             absolute -left-40 top-40
             h-[500px] w-[500px]
@@ -549,9 +549,9 @@ function App() {
             bg-indigo-600/10
             blur-[150px]
           "
-        />
+        /> */}
 
-        <div
+        {/* <div
           className="
             absolute -right-40 top-[40%]
             h-[450px] w-[450px]
@@ -559,7 +559,7 @@ function App() {
             bg-cyan-500/10
             blur-[150px]
           "
-        />
+        /> */}
       </div>
 
       {/* =====================================================
@@ -589,7 +589,7 @@ function App() {
 
           bg-[#0b101c]/85
           shadow-2xl shadow-black/30
-          backdrop-blur-xl
+          
         `
         : `
           top-0
@@ -599,7 +599,7 @@ function App() {
           border-b border-white/10
 
           bg-[#070b14]/75
-          backdrop-blur-xl
+          
         `
     }
   `}
@@ -1221,7 +1221,7 @@ function App() {
               rounded-2xl
               border border-white/[0.08]
               bg-white/[0.035]
-              backdrop-blur-xl
+             
               sm:grid-cols-3
             "
           >
@@ -1902,7 +1902,7 @@ function App() {
                     border border-white/[0.08]
                     bg-white/[0.035]
                     p-7
-                    backdrop-blur-md
+                    
                     transition-all
                     duration-300
                     hover:-translate-y-1.5
@@ -2206,7 +2206,7 @@ function App() {
 
           p-6
 
-          backdrop-blur-xl
+          
 
           sm:p-8
         "
