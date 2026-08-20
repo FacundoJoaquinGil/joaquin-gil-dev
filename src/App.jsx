@@ -535,11 +535,11 @@ function App() {
       ===================================================== */}
 
       <div className="pointer-events-none fixed inset-0 z-0">
-        <Particles
+        {/* <Particles
           id="particles"
           options={particlesOptions}
           className="absolute inset-0 h-full w-full"
-        />
+        /> */}
 
         <div
           className="
@@ -1426,6 +1426,129 @@ function App() {
         </motion.a>
       </section>
 
+      <SectionDivider />
+
+      {/* =====================================================
+          CÓMO TRABAJO
+      ===================================================== */}
+
+      <section
+        id="como-trabajo"
+        className="
+          relative z-10
+          py-24 sm:py-32
+        "
+      >
+        <div
+          className="
+            mx-auto
+            max-w-7xl
+            px-5
+            sm:px-8
+          "
+        >
+          <div
+            data-aos="fade-up"
+            className="text-center"
+          >
+            <span
+              className="
+                text-sm font-semibold
+                uppercase
+                tracking-[0.2em]
+                text-indigo-400
+              "
+            >
+              Cómo trabajo
+            </span>
+
+            <h2
+              className="
+                mx-auto mt-4
+                max-w-3xl
+                text-4xl font-bold
+                tracking-tight
+                sm:text-5xl
+              "
+            >
+              No hace falta que sepas qué sistema necesitás.
+            </h2>
+
+            <p
+              className="
+                mx-auto mt-5
+                max-w-2xl
+                text-lg
+                leading-8
+                text-slate-400
+              "
+            >
+              Alcanzan una idea, un problema o una tarea que quieras
+              simplificar.
+            </p>
+          </div>
+
+          <div
+            className="
+              mt-16
+              grid gap-5
+              md:grid-cols-3
+            "
+          >
+            {pasos.map((paso, index) => (
+              <div
+                key={paso.numero}
+                data-aos="fade-up"
+                data-aos-delay={index * 150}
+                className="
+                  rounded-2xl
+                  border border-white/[0.08]
+                  bg-white/[0.025]
+                  p-8
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:border-white/[0.14]
+                  hover:bg-white/[0.04]
+                "
+              >
+                <span
+                  className="
+                    bg-gradient-to-r
+                    from-indigo-400
+                    to-cyan-400
+                    bg-clip-text
+                    text-4xl font-bold
+                    text-transparent
+                  "
+                >
+                  {paso.numero}
+                </span>
+
+                <h3
+                  className="
+                    mt-8
+                    text-xl font-semibold
+                  "
+                >
+                  {paso.titulo}
+                </h3>
+
+                <p
+                  className="
+                    mt-3
+                    leading-7
+                    text-slate-400
+                  "
+                >
+                  {paso.descripcion}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* =====================================================
     PROPUESTA
 ===================================================== */}
@@ -1813,129 +1936,6 @@ function App() {
                   {descripcion}
                 </p>
               </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* =====================================================
-          CÓMO TRABAJO
-      ===================================================== */}
-
-      <section
-        id="como-trabajo"
-        className="
-          relative z-10
-          py-24 sm:py-32
-        "
-      >
-        <div
-          className="
-            mx-auto
-            max-w-7xl
-            px-5
-            sm:px-8
-          "
-        >
-          <div
-            data-aos="fade-up"
-            className="text-center"
-          >
-            <span
-              className="
-                text-sm font-semibold
-                uppercase
-                tracking-[0.2em]
-                text-indigo-400
-              "
-            >
-              Cómo trabajo
-            </span>
-
-            <h2
-              className="
-                mx-auto mt-4
-                max-w-3xl
-                text-4xl font-bold
-                tracking-tight
-                sm:text-5xl
-              "
-            >
-              No hace falta que sepas qué sistema necesitás.
-            </h2>
-
-            <p
-              className="
-                mx-auto mt-5
-                max-w-2xl
-                text-lg
-                leading-8
-                text-slate-400
-              "
-            >
-              Alcanzan una idea, un problema o una tarea que quieras
-              simplificar.
-            </p>
-          </div>
-
-          <div
-            className="
-              mt-16
-              grid gap-5
-              md:grid-cols-3
-            "
-          >
-            {pasos.map((paso, index) => (
-              <div
-                key={paso.numero}
-                data-aos="fade-up"
-                data-aos-delay={index * 150}
-                className="
-                  rounded-2xl
-                  border border-white/[0.08]
-                  bg-white/[0.025]
-                  p-8
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:border-white/[0.14]
-                  hover:bg-white/[0.04]
-                "
-              >
-                <span
-                  className="
-                    bg-gradient-to-r
-                    from-indigo-400
-                    to-cyan-400
-                    bg-clip-text
-                    text-4xl font-bold
-                    text-transparent
-                  "
-                >
-                  {paso.numero}
-                </span>
-
-                <h3
-                  className="
-                    mt-8
-                    text-xl font-semibold
-                  "
-                >
-                  {paso.titulo}
-                </h3>
-
-                <p
-                  className="
-                    mt-3
-                    leading-7
-                    text-slate-400
-                  "
-                >
-                  {paso.descripcion}
-                </p>
-              </div>
             ))}
           </div>
         </div>
